@@ -1,0 +1,259 @@
+================================================================================
+        CONCLUSION FROM 1ST EXPERIMENT - BIG DATA ANALYSIS PROJECT
+                    IIT Kharagpur - Big Data Analysis Course
+================================================================================
+
+
+1. DATASET DESCRIPTION
+================================================================================
+
+   Dataset Name:       Facebook MUSAE (Multi-Scale Attributed Node Embedding)
+   Source:              MUSAE-master/input/edges/facebook_edges.csv
+   Dataset Type:        Social Network Edge List
+   Description:         The dataset represents Facebook page-page relationships.
+                        Each node is a verified Facebook page and each edge
+                        represents a mutual "like" between two pages. The pages
+                        belong to categories such as politicians, companies,
+                        TV shows, athletes, etc.
+
+   Key Statistics:
+   +--------------------------+----------------+
+   | Metric                   | Value          |
+   +--------------------------+----------------+
+   | Total Nodes (N)          | 22,470         |
+   | Total Edges              | 171,002        |
+   | Graph Type               | Undirected     |
+   | Average Degree           | 15.22          |
+   | Network Density          | 0.000677       |
+   | Is Connected             | True (1 comp.) |
+   +--------------------------+----------------+
+
+   The entire graph is a single connected component, meaning every node can
+   reach every other node through some path. This is a characteristic of
+   social networks and is related to the "small-world" property.
+
+
+2. METHODOLOGY
+================================================================================
+
+   The project follows these steps as per the professor's instructions:
+
+   Step 1: Pick N nodes from a social media dataset.
+           We used all N = 22,470 nodes in the Facebook MUSAE dataset.
+
+   Step 2: Define undirected links.
+           Two nodes are linked if a friend/follower relationship exists
+           between them (mutual likes between Facebook pages). The graph
+           is undirected.
+
+   Step 3: Extract K-distance induced neighbourhood subgraphs.
+           For each of the 22,470 nodes, we extracted the K-distance induced
+           neighbourhood subgraph. This is the subgraph formed by ALL nodes
+           within K hops of a given node, along with all edges between them.
+
+   Step 4: Feature Engineering (20-dimensional dataset).
+           For each node's K-neighbourhood subgraph:
+             - Compute the degree of every node WITHIN the induced subgraph
+             - Sort degrees in descending order
+             - Take the top 20 degree values as the feature vector
+           This produces a dataset of shape: 22,470 x 20
+
+   Step 5: PCA Analysis.
+           Apply PCA (after StandardScaler normalization) to the 20-dimensional
+           dataset and determine how many principal components are needed to
+           capture 60%, 80%, and 90% of the total variance.
+
+
+3. CHOICE OF K (CRITICAL DESIGN DECISION)
+================================================================================
+
+   The professor suggested K = 10. However, this is impractical for the
+   Facebook dataset due to the "small-world" property of social networks.
+
+   We verified this by sampling 20 nodes and measuring their neighbourhood
+   sizes at K = 1, 2, and 3:
+
+   Observation:
+   - At K = 1: Neighbourhood sizes range from ~2 to ~50 nodes
+                (only direct neighbours)
+   - At K = 2: Neighbourhood sizes range from ~3 to ~5,917 nodes
+                (up to 26% of the entire graph!)
+   - At K = 3: Neighbourhood sizes would cover nearly the ENTIRE graph
+                for most nodes (approaching 22,470)
+
+   Decision: We used K = 2 because:
+   (a) K = 3 or higher would result in almost identical subgraphs for all
+       nodes (covering the whole connected component), making the features
+       indistinguishable.
+   (b) K = 2 provides meaningful variation in neighbourhood sizes (3 to 5,917).
+   (c) K = 1 would give very small subgraphs with few nodes, potentially
+       not enough to extract 20 meaningful degree values.
+
+   This choice is directly related to the small-world property of the network.
+
+
+4. WHAT IS THE "SMALL-WORLD" PROPERTY?
+================================================================================
+
+   A "small-world" network is a type of graph where most nodes can be reached
+   from every other node in a very small number of steps (hops), even though
+   the total number of nodes may be very large.
+
+   Key characteristics of small-world networks:
+
+   (a) SHORT AVERAGE PATH LENGTH:
+       The average shortest path between any two nodes is surprisingly small.
+       For social networks with millions of users, this is typically 4-6 hops.
+       This is the famous "six degrees of separation" phenomenon.
+
+   (b) HIGH CLUSTERING COEFFICIENT:
+       Nodes tend to form tightly-knit groups. If person A is friends with
+       B and C, then B and C are also likely friends. This creates dense
+       local clusters.
+
+   (c) DEGREE DISTRIBUTION FOLLOWS POWER LAW:
+       A few "hub" nodes have very high degree (many connections), while
+       the vast majority of nodes have low degree. The log-log degree
+       distribution plot in our analysis confirms this.
+
+   For our Facebook dataset (22,470 nodes, avg degree 15.22):
+   - Just 2 hops covers up to 26% of the entire graph
+   - 3 hops covers almost the entire graph
+
+   This means information (or influence) can spread extremely rapidly
+   through the network. It also means that K-neighbourhood subgraphs
+   at K >= 2 are very large and heavily overlapping.
+
+
+5. PCA RESULTS
+================================================================================
+
+   After standardizing the 22,470 x 20 feature matrix (zero mean, unit
+   variance per feature), we applied PCA with all 20 components.
+
+   Results:
+
+   +-----+-------------------+--------------------+
+   | PC  | Individual Var %  | Cumulative Var %   |
+   +-----+-------------------+--------------------+
+   | PC1 |           98.5%   |           98.5%    |
+   | PC2 |            0.8%   |           99.3%    |
+   | PC3 |            0.2%   |           99.5%    |
+   | ... |            ...    |            ...     |
+   +-----+-------------------+--------------------+
+
+   Variance Thresholds:
+   +---------------------+-------------------+
+   | Threshold           | PCs Required      |
+   +---------------------+-------------------+
+   | 60% variance        | 1 PC              |
+   | 80% variance        | 1 PC              |
+   | 90% variance        | 1 PC              |
+   +---------------------+-------------------+
+
+   PC1 alone explains 98.5% of the total variance.
+   PC1 + PC2 together explain 99.3%.
+
+   This means only 1 principal component is sufficient to capture
+   60%, 80%, AND 90% of the variance in our 20-dimensional dataset.
+
+
+6. INTERPRETATION OF RESULTS
+================================================================================
+
+   The finding that PC1 captures 98.5% of variance is SIGNIFICANT.
+   It is NOT an error — it reveals an important structural property
+   of the Facebook network.
+
+   WHY does this happen?
+
+   (a) FEATURE HOMOGENEITY:
+       The 20 features (top-20 degrees in the K=2 neighbourhood) are
+       almost perfectly correlated with each other. When a node's
+       neighbourhood is large, ALL 20 top-degree values are high.
+       When it's small, ALL are low. They scale together.
+
+   (b) HUB NODE DOMINANCE:
+       The same hub nodes (with highest degree in the full graph) appear
+       in the K=2 neighbourhoods of thousands of different nodes.
+       So the "top 20 degrees" are dominated by the same hubs across
+       almost all neighborhoods.
+
+   (c) OVERLAPPING NEIGHBOURHOODS:
+       Due to the small-world property, K=2 neighbourhoods of different
+       nodes share massive portions of their members. Two nodes that
+       are 2 hops apart have nearly identical K=2 neighbourhoods.
+
+   (d) ONE DOMINANT DIMENSION:
+       Since all 20 features essentially measure the same thing
+       ("how large and well-connected is my neighbourhood?"), a single
+       principal component capturing the "overall neighbourhood size/
+       connectivity" is sufficient to explain nearly all variance.
+
+
+7. VISUALIZATIONS PRODUCED
+================================================================================
+
+   The notebook produces the following visualizations:
+
+   (a) DEGREE DISTRIBUTION:
+       - Histogram (linear scale) showing the power-law-like distribution
+       - Log-log plot confirming the heavy-tailed nature
+
+   (b) NETWORK VISUALIZATIONS:
+       - 1,500-node BFS subgraph coloured by Louvain community detection
+         on a dark background with hub nodes highlighted in yellow
+       - Ego network of the highest-degree node (2-hop radius) showing
+         hub, 1-hop, and 2-hop neighbours in different colours
+       - Full-network community structure (bar chart + pie chart)
+
+   (c) FEATURE ANALYSIS:
+       - Distribution of K=2 neighbourhood sizes
+       - 20x20 feature correlation heatmap
+
+   (d) PCA ANALYSIS:
+       - Scree plot (individual variance per PC)
+       - Cumulative variance plot with 60%, 80%, 90% threshold annotations
+       - 2D scatter plot (PC1 vs PC2) coloured by original node degree
+       - PCA loading bar charts for PC1, PC2, PC3
+
+
+8. KEY TAKEAWAYS / CONCLUSIONS
+================================================================================
+
+   1. The Facebook MUSAE dataset exhibits strong SMALL-WORLD properties:
+      the network is fully connected, and K=2 neighbourhoods cover up to
+      26% of the entire graph (up to 5,917 out of 22,470 nodes).
+
+   2. Due to the small-world property, K=10 (as suggested by the professor)
+      is impractical for this dataset. Even K=3 would cover the entire
+      graph. We used K=2, which provides meaningful variation.
+
+   3. The 20-dimensional feature dataset (top-20 degrees per K=2
+      neighbourhood) has extremely high inter-feature correlation
+      because the neighbourhoods are large and overlapping, and the
+      same hub nodes dominate the degree rankings across all
+      neighbourhoods.
+
+   4. PCA reveals that ONLY 1 PRINCIPAL COMPONENT is sufficient to
+      capture 98.5% of the variance. This is a direct consequence
+      of the small-world property and feature construction method.
+
+   5. This result is not wrong or unexpected — it is a genuine and
+      important finding about the structure of social networks. The
+      high variance captured by PC1 reflects the fact that the network
+      has a single dominant structural dimension: the "neighbourhood
+      size / hub connectivity" axis.
+
+   6. For more differentiated PCA results (more PCs needed for 90%),
+      one could:
+      - Use K=1 instead of K=2 (smaller, more diverse neighbourhoods)
+      - Use different features (normalized degrees, clustering
+        coefficients, centrality measures)
+      - Use a larger, sparser dataset (like the Twitter dataset
+        in the reference notebook with 5.3M nodes)
+      - Use degree distribution histograms instead of raw top-K degrees
+
+================================================================================
+                              END OF CONCLUSIONS
+================================================================================
