@@ -1,0 +1,28 @@
+graph: {'directed_edges_in_file': 508837, 'self_loops_removed': 0, 'nodes_with_edges': 75879, 'undirected_edges': 405740, 'reciprocal_pairs': 103097, 'giant_component_nodes': 75877, 'mean_degree': 10.694395023656083, 'median_degree': 2.0, 'max_degree': 3044, 'load_seconds': 1.0}
+features: (75888, 20) 9.4 s
+distances: {'mean': 4.3510052805454515, 'p90': 6.0, 'max_seen': 13}
+SIR: {'beta_c': 0.005468111532548296, 'beta': 0.008202167298822444, 'spread_median': 3.616, 'spread_max': 781.537, 'noise_ceiling_spearman_halves': 0.8295230316505946, 'noise_ceiling_r2_log_halves': 0.779792272916495}
+                                      model  roc_auc  avg_precision     r2  spearman
+                               degree alone   0.9914         0.9216 0.7118    0.7007
+                             coreness alone   0.9943         0.9453 0.7406    0.7068
+                            trussness alone   0.9656         0.6920 0.5325    0.5236
+                            triangles alone   0.9855         0.8608 0.6080    0.5393
+               collective_influence_2 alone   0.9973         0.9747 0.5965    0.7480
+                             pagerank alone   0.9805         0.8673 0.3334    0.4594
+                        two_hop_reach alone   0.9920         0.9295 0.8026    0.9183
+                         -forman_mean alone   0.8431         0.2404 0.4728    0.7982
+            D-C-T rank average (no fitting)   0.9897         0.9040 0.3192    0.6327
+ D-C-T ensemble (logistic / linear, 5-fold)   0.9955         0.9651 0.7509    0.7179
+all 20 features (logistic / linear, 5-fold)   0.9988         0.9899 0.9103    0.9165
+ beta_multiple  runs  spread_median  roc_auc  avg_precision     r2  spearman  degree_auc
+           1.0   200         1.0150   0.9282         0.7750 0.6492    0.6934      0.9318
+           2.0   200        12.7175   0.9952         0.9574 0.6066    0.6823      0.9914
+PCA: {'raw_pc1': 0.9999999941651474, 'raw_components_for_90pct': 1, 'logstd_pc1': 0.5865119873252556, 'logstd_pc2': 0.16931091893017725, 'logstd_components_for_90pct': 5, 'logstd_shares': [0.5865, 0.1693, 0.0755, 0.0463, 0.0375, 0.0329, 0.022, 0.013, 0.0074, 0.0033, 0.002, 0.0017, 0.0008, 0.0005, 0.0005, 0.0004, 0.0002, 0.0001, 0.0, 0.0]}
+PCA components model: [{'k': 1, 'roc_auc': 0.995, 'r2': 0.8113}, {'k': 2, 'roc_auc': 0.9938, 'r2': 0.8103}, {'k': 3, 'roc_auc': 0.9955, 'r2': 0.8736}, {'k': 5, 'roc_auc': 0.9952, 'r2': 0.8736}, {'k': 10, 'roc_auc': 0.9971, 'r2': 0.8997}, {'k': 20, 'roc_auc': 0.9975, 'r2': 0.9027}]
+ kept_share_of_graph  curvature_threshold  top_spreaders_retained_curvature  top_spreaders_retained_degree_same_size  seed_sample_retained
+                0.05              -1824.0                              0.27                                     0.39                 0.038
+                0.10              -1360.0                              0.56                                     0.85                 0.096
+                0.20               -654.0                              0.94                                     1.00                 0.185
+                0.30               -377.0                              1.00                                     1.00                 0.284
+filtered distances: {'mean': 2.87752811456686, 'p90': 3.0, 'max_seen': 4} | positive backbone: {'edges': 5819, 'nodes': 8344, 'mean': 1.2941176470588236, 'p90': 2.0, 'max_seen': 5}
+done

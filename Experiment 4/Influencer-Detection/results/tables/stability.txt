@@ -1,0 +1,5 @@
+          model  roc_auc_mean  roc_auc_min  roc_auc_max  r2_mean  r2_min  r2_max
+ D-C-T ensemble        0.9955       0.9952       0.9958   0.7508  0.7501  0.7518
+all 20 features        0.9987       0.9983       0.9989   0.9097  0.9075  0.9111
+degree-alone ROC-AUC 95% bootstrap interval: 0.9870 to 0.9951
+positives: 100 of 1000; spread threshold for 'influencer': 43.5 nodes

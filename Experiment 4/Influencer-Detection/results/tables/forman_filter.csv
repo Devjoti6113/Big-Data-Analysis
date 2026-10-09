@@ -1,0 +1,5 @@
+kept_share_of_graph,curvature_threshold,top_spreaders_retained_curvature,top_spreaders_retained_degree_same_size,seed_sample_retained
+0.05016012757489094,-1824.0,0.27,0.39,0.038
+0.10001713299155211,-1360.0,0.56,0.85,0.096
+0.20002108675883337,-654.0,0.94,1.0,0.185
+0.3001831912173649,-377.0,1.0,1.0,0.284

@@ -1,0 +1,105 @@
+{
+  "directed_edges_in_file": 508837,
+  "self_loops_removed": 0,
+  "nodes_with_edges": 75879,
+  "undirected_edges": 405740,
+  "reciprocal_pairs": 103097,
+  "giant_component_nodes": 75877,
+  "mean_degree": 10.694395023656083,
+  "median_degree": 2.0,
+  "max_degree": 3044,
+  "load_seconds": 1.0,
+  "triangles": 1624481,
+  "max_core": 67,
+  "max_truss": 33,
+  "feature_seconds": 9.4,
+  "forman_plain_median": -241.0,
+  "forman_aug_median": -220.0,
+  "forman_aug_share_positive": 0.014341696653029033,
+  "distances_full_graph": {
+    "mean": 4.3510052805454515,
+    "p90": 6.0,
+    "max_seen": 13
+  },
+  "sir_seconds": 41.6,
+  "beta_c": 0.005468111532548296,
+  "beta": 0.008202167298822444,
+  "runs_per_seed": 1000,
+  "spread_median": 3.616,
+  "spread_max": 781.537,
+  "noise_ceiling_spearman_halves": 0.8295230316505946,
+  "noise_ceiling_r2_log_halves": 0.779792272916495,
+  "pca": {
+    "raw_pc1": 0.9999999941651474,
+    "raw_components_for_90pct": 1,
+    "logstd_pc1": 0.5865119873252556,
+    "logstd_pc2": 0.16931091893017725,
+    "logstd_components_for_90pct": 5,
+    "logstd_shares": [
+      0.5865,
+      0.1693,
+      0.0755,
+      0.0463,
+      0.0375,
+      0.0329,
+      0.022,
+      0.013,
+      0.0074,
+      0.0033,
+      0.002,
+      0.0017,
+      0.0008,
+      0.0005,
+      0.0005,
+      0.0004,
+      0.0002,
+      0.0001,
+      0.0,
+      0.0
+    ]
+  },
+  "pca_components_model": [
+    {
+      "k": 1,
+      "roc_auc": 0.995,
+      "r2": 0.8113
+    },
+    {
+      "k": 2,
+      "roc_auc": 0.9938,
+      "r2": 0.8103
+    },
+    {
+      "k": 3,
+      "roc_auc": 0.9955,
+      "r2": 0.8736
+    },
+    {
+      "k": 5,
+      "roc_auc": 0.9952,
+      "r2": 0.8736
+    },
+    {
+      "k": 10,
+      "roc_auc": 0.9971,
+      "r2": 0.8997
+    },
+    {
+      "k": 20,
+      "roc_auc": 0.9975,
+      "r2": 0.9027
+    }
+  ],
+  "distances_curvature_filtered_20pct": {
+    "mean": 2.87752811456686,
+    "p90": 3.0,
+    "max_seen": 4
+  },
+  "positive_curvature_backbone": {
+    "edges": 5819,
+    "nodes": 8344,
+    "mean": 1.2941176470588236,
+    "p90": 2.0,
+    "max_seen": 5
+  }
+}
